@@ -32,10 +32,9 @@ contract ComboMapping is Ownable {
         UpdateComboToken(notWorkingCombo, combo);
     }
 
-    function mappingToken() external {
+    function mappingToken(uint256 amount) external {
         address account = msg.sender;
         require(!blackAccountMaps[account], "in black list");
-        uint256 amount = IERC20(cocos).balanceOf(account);
         require(
             IERC20(cocos).transferFrom(account, address(this), amount),
             "COCOS transfer failed."
