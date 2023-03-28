@@ -14,7 +14,7 @@ contract ComboMapping is Ownable {
 
     event UpdateComboToken(address notWorkingCombo, address combo);
     event Mapping(address account, address burnAddress, uint256 amount);
-    event UpdateWithdrawAddress(address withdrawAddress);
+    event UpdateBurnAddress(address burnAddress);
 
     event AddBlackAccount(address blackAccount);
     event DelBlackAccount(address blackAccount);
@@ -70,8 +70,8 @@ contract ComboMapping is Ownable {
         emit DelBlackAccount(_blackAccount);
     }
 
-    function updateWithdrawAddress(address _burnAddress) external onlyOwner {
+    function updateBurnAddress(address _burnAddress) external onlyOwner {
         burnAddress = _burnAddress;
-        emit UpdateWithdrawAddress(_burnAddress);
+        emit UpdateBurnAddress(_burnAddress);
     }
 }
