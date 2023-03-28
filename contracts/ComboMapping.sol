@@ -7,23 +7,23 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ComboMapping is Ownable {
     address public combo;
     address public cocos;
-    address public withdrawAddress;
+    address public burnAddress;
 
     // black list
     mapping(address => bool) public blackAccountMaps;
 
     event UpdateComboToken(address notWorkingCombo, address combo);
-    event Mapping(address account, uint256 amount);
+    event Mapping(address account, address burnAddress, uint256 amount);
     event UpdateWithdrawAddress(address withdrawAddress);
 
     event AddBlackAccount(address blackAccount);
     event DelBlackAccount(address blackAccount);
     event EmergencyWithdraw(address account, uint256 banlance);
 
-    constructor(address combo_, address cocos_, address withdrawAddress_) {
-        combo_ = combo_;
-        cocos_ = cocos_;
-        withdrawAddress = withdrawAddress_;
+    constructor(address combo_, address cocos_, address burnAddress_) {
+        combo = combo_;
+        cocos = cocos_;
+        burnAddress = burnAddress_;
     }
 
     function updateComboToken(address comboToken) external onlyOwner {
@@ -36,7 +36,7 @@ contract ComboMapping is Ownable {
         address account = msg.sender;
         require(!blackAccountMaps[account], "in black list");
         require(
-            IERC20(cocos).transferFrom(account, address(this), amount),
+            IERC20(cocos).transferFrom(account, burnAddress, amount),
             "COCOS transfer failed."
         );
 
@@ -45,7 +45,7 @@ contract ComboMapping is Ownable {
             "COMBO transfer failed."
         );
 
-        emit Mapping(account, amount);
+        emit Mapping(account, burnAddress, amount);
     }
 
     function emergencyWithdraw(
@@ -70,10 +70,8 @@ contract ComboMapping is Ownable {
         emit DelBlackAccount(_blackAccount);
     }
 
-    function updateWithdrawAddress(
-        address _withdrawAddress
-    ) external onlyOwner {
-        withdrawAddress = _withdrawAddress;
-        emit UpdateWithdrawAddress(withdrawAddress);
+    function updateWithdrawAddress(address _burnAddress) external onlyOwner {
+        burnAddress = _burnAddress;
+        emit UpdateWithdrawAddress(_burnAddress);
     }
 }
