@@ -29,7 +29,7 @@ contract ComboMapping is Ownable {
     function updateComboToken(address comboToken) external onlyOwner {
         address notWorkingCombo = combo;
         combo = comboToken;
-        UpdateComboToken(notWorkingCombo, combo);
+        emit UpdateComboToken(notWorkingCombo, combo);
     }
 
     function mappingToken(uint256 amount) external {
